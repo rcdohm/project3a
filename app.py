@@ -59,12 +59,15 @@ def index():
     selectedStartDate = request.form.get("date-start")
     selectedEndDate = request.form.get("date-end")
     
+    
+
     if choice != "Time Series (5min)":
         data = query_alpha_vantage(selectedSymbol, selectedTimeSeries, selectedStartDate, selectedEndDate)
-        return data
+        
     else:
         data = query_alpha_vantage_intraday(selectedSymbol,selectedTimeSeries,selectedStartDate,selectedEndDate,interval)
 
+    
 
         
     if selectedTimeSeries == "TIME_SERIES_INTRADAY":
@@ -82,22 +85,25 @@ def index():
     dates = []
     values = []
     for date, value in data[choice].items():
-       if selectedStartDate <= date <= selectedEndDate:
-        dates.append(date)
-        values.append(float(value["4. close"]))  # Assuming closing price is needed
+        if selectedStartDate <= date <= selectedEndDate:
+         dates.append(date)
+         values.append(float(value["4. close"]))  # Assuming closing price is needed
 
     #Plot the graph
     plot_graph(dates, values, selectedStyle)
     
     
     
-    return render_template('index.html',symbols=symbols,selectedSymbol=selectedSymbol,selectedTimeSeries=selectedTimeSeries,data=data,selectedStyle=selectedStyle)
+    return render_template('index.html',stock_symbols=symbols,selectedSymbol=selectedSymbol,selectedTimeSeries=selectedTimeSeries,data=data,selectedStyle=selectedStyle)
 
 
 
 def plot_graph(dates, values, chart_type):
     plt.figure(figsize=(10, 6))
-    plt.plot(dates, values)
+    if chart_type == "1":
+        plt.bar(dates, values)
+    elif chart_type == "2":
+        plt.plot(dates,values)
     plt.title(f"Stock Data ({chart_type})")
     plt.xlabel("Date")
     plt.ylabel("Value")
