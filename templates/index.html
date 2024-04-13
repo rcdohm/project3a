@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Flask App</title>
+    </head>
+    <body>
+        <form method="POST">
+            <label>Choose a symbol:</label>
+            <select name="symbol" action="/">
+                <option value="{{symbols[0]}}" selected>{{symbols[0]}}</option>
+                {% for symbol in symbols[1:] %}
+                <option value="{{symbol}}">{{symbol}}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label>Choose a style:</label>
+            <select name="style" method="POST" action="/">
+                <option value="1">Bar</option>
+                <option value="2">Line</option>
+            </select>
+            <br>
+            <label>Choose a timeseries:</label>
+            <select name="timeseries" method="POST" action="/">
+                <option value="TIME_SERIES_DAILY">Daily</option>
+                <option value="TIME_SERIES_INTRADAY">Intraday</option>
+                <option value="TIME_SERIES_WEEKLY">Weekly</option>
+                <option value="TIME_SERIES_MONTHLY">Monthly</option>
+            </select>
+            <br>
+            <label for="start">Start date:</label>
+            <input type="date" id="start" name="date-start" />
+            <br>
+            <label for="end">End date:</label>
+            <input type="date" id="end" name="date-end" />
+            <br>
+            <button type="submit">Submit</button>
+        </form>
+        <br>
+        
+        <p>{{selectedSymbol}}</p>
+        <p>{{selectedTimeSeries}}</p>
+
+        <img src="/static/images/plot.png" alt="Chart" height="auto" width="100%">
+        <p>"{{data}}"</p>
+          
+    </body>
+</html>
